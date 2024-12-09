@@ -2,7 +2,8 @@ import requests
 from pathlib import Path
 
 def download_or_cached(url):
-    local_file = Path("cache", url.rpartition('/')[-1])
+    cache_path = Path("cache").mkdir(parents=True, exist_ok=True)
+    local_file = cache_path / url.rpartition('/')[-1]
 
     if local_file.is_file():
         return local_file
