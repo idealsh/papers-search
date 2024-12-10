@@ -1,15 +1,10 @@
 import streamlit as st
 import sqlalchemy
-from sqlalchemy.dialects import postgresql
 import pandas as pd
 import plotly.express as px
 import json
 import numpy as np
-from geopy.geocoders import Nominatim
-from geopy.exc import GeocoderTimedOut
-from subject_data import subject_dict, subject_overall_dict
-import re
-from collections import Counter
+from assets.subject_data import subject_overall_dict
 import altair as alt
 from sklearn.feature_extraction.text import CountVectorizer
 
@@ -156,7 +151,7 @@ st.divider()
 st.header("🌏 Number of Paper per Country Choropleth Map")
 countries_df = df["affiliation_country"].dropna().value_counts().reset_index()
 countries_df["Log"] = np.log(countries_df["count"])
-with open("Custom Geo Data.json", encoding="utf8") as f:
+with open("assets/custom.geo.json", encoding="utf8") as f:
     geojson = json.load(f)
 fig = px.choropleth(
     countries_df,

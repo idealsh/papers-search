@@ -2,6 +2,7 @@ import pandas as pd
 from sbert import sbert
 from pathlib import Path
 
+# The file is not tracked on git
 df = pd.read_feather("./dataframes/papers-combined-ml.feather")
 
 Path("generated").mkdir(exists_ok=True)

@@ -1,7 +1,7 @@
 import pandas as pd
-import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from sentence_transformers import SentenceTransformer
+
 
 class SbertEmbedding(TransformerMixin, BaseEstimator):
     def __init__(self, model, batch_size=1, layer=-1):
@@ -23,5 +23,6 @@ class SbertEmbedding(TransformerMixin, BaseEstimator):
             return pd.DataFrame(vectors_np, index=nona.index)
         else:
             return model.encode(X)
+
 
 sbert = SbertEmbedding("all-MiniLM-L6-v2")

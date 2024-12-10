@@ -3,7 +3,7 @@ import sqlalchemy
 import pandas as pd
 import plotly.express as px
 import numpy as np
-from subject_data import fields_dict
+from assets.subject_data import fields_dict
 from sklearn.feature_extraction.text import CountVectorizer
 
 

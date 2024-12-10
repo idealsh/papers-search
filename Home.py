@@ -2,7 +2,7 @@ import streamlit as st
 import sqlalchemy
 import pandas as pd
 import plotly.express as px
-from subject_data import subject_overall_dict
+from assets.subject_data import subject_overall_dict
 
 
 @st.cache_resource
