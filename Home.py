@@ -33,7 +33,7 @@ df_scraped = load_scraped()
 
 
 # Sticky note styling
-st.markdown(
+st.html(
     """
     <style>
     .sticky-note {
@@ -62,8 +62,7 @@ st.markdown(
         font-weight: bold;
     }
     </style>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 
@@ -71,7 +70,6 @@ st.markdown(
 df["two_digits"] = df["subject_codes"].map(lambda x: str(x)[1:3])
 # st.write(df['subject_names'].map(set).explode().value_counts())
 st.title("Honggege Data Science Project")
-st.write("")
 # st.header("Organize your app with layouts")
 
 
@@ -135,7 +133,6 @@ with col2:
     </div>
     """
     )
-st.write("")
 
 combind_df = pd.DataFrame(
     {
@@ -150,7 +147,7 @@ with st.container():
     st.plotly_chart(fig, theme=None)
 
 st.divider()
-st.markdown("### 🎯 Honggege's members")
+st.header("🎯 Honggege's members")
 st.markdown(
     """
     1. 6638127221 Bhannavit Sripusitto

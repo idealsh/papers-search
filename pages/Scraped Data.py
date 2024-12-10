@@ -1,16 +1,9 @@
 import streamlit as st
 import sqlalchemy
-from sqlalchemy.dialects import postgresql
 import pandas as pd
 import plotly.express as px
-import json
 import numpy as np
-from geopy.geocoders import Nominatim
-from geopy.exc import GeocoderTimedOut
-from subject_data import subject_dict, subject_overall_dict, fields_dict
-import re
-from collections import Counter
-import altair as alt
+from subject_data import fields_dict
 from sklearn.feature_extraction.text import CountVectorizer
 
 
