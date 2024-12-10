@@ -125,7 +125,8 @@ def search_vector(query_vector, title, abstract):
 
 abstract_vec = load_generated("abstract_vec.feather")
 title_vec = load_generated("title_vec.feather")
-sim_mtx = load_generated("similarity_mtx.feather")
+# sim_mtx = load_generated("similarity_mtx.feather")
+similar_paper_indices = load_generated("similar_papers.feather")
 
 st.header("🔎 Paper search and suggestions")
 with st.form("search", border=True):
@@ -198,13 +199,17 @@ def toggle_recommendation(paper):
         # similar_papers = fetch_details(pd.DataFrame(similarities))
         # st.session_state.paper_recommendations[paper.name] = similar_papers
 
-        similarities = (
-            sim_mtx.loc[paper.name]
-            .drop(paper.name)
-            .sort_values(ascending=False)
-            .head(5)
-            .rename("overall_similarity")
-        )
+        # similarities = (
+        #     similar_papers.loc[paper.name]
+        #     .drop(paper.name)
+        #     .sort_values(ascending=False)
+        #     .head(5)
+        #     .rename("overall_similarity")
+        # )
+        similar_result = similar_paper_indices.loc[paper.name]
+        similarities = pd.Series(
+            similar_result.similarity, index=similar_result.similar_indices
+        ).rename("overall_similarity")
         similar_papers = fetch_details(pd.DataFrame(similarities))
         st.session_state.paper_recommendations[paper.name] = similar_papers
         # recommendations = pd.merge(df, similar, how="inner", left_index=True, right_index=True).sort_values("similarity", ascending=False)
