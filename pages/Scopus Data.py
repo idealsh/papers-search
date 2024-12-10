@@ -30,7 +30,7 @@ def load():
 df = load()
 
 
-st.markdown(
+st.html(
     """
     <style>
     .sticky-note {
@@ -59,8 +59,7 @@ st.markdown(
         font-weight: bold;
     }
     </style>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 
@@ -68,7 +67,6 @@ st.markdown(
 df["two_digits"] = df["subject_codes"].map(lambda x: str(x)[1:3])
 # st.write(df['subject_names'].map(set).explode().value_counts())
 st.title("Scopus Data")
-st.write("")
 
 
 def format_func(options):
@@ -119,7 +117,6 @@ st.html(
     </div>
     """
 )
-st.markdown("---")
 
 df2 = df["subject_names"].map(set).explode().value_counts()
 st.header("🥇 Percentage of Papers per Field")
@@ -153,7 +150,7 @@ with tab2:
 
     st.plotly_chart(fig, theme="streamlit")
 
-st.markdown("---")
+st.divider()
 
 # Number of Paper per Country Choropleth Map
 st.header("🌏 Number of Paper per Country Choropleth Map")
@@ -185,9 +182,6 @@ fig.update_layout(
 st.write("Data is displayed in logarithmic scale")
 st.plotly_chart(fig)
 
-st.markdown("---")
-
-
 col1, col2 = st.columns(2)
 
 with col1:
@@ -210,7 +204,7 @@ with col2:
     """,
     )
 
-st.markdown("---")
+st.divider()
 
 st.header("💬 Top 10 Most Frequent Words in Abstracts")
 
@@ -247,7 +241,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 # st.write(word_freq_df)
 
-st.markdown("---")
+st.divider()
 st.header("🔎 Author Grouped by Paper Count")
 
 df_authors = df_author["authors"].explode()
@@ -272,7 +266,7 @@ fig.update_layout(
 
 st.plotly_chart(fig, theme="streamlit")
 
-st.markdown("---")
+st.divider()
 st.header("💰 Ranking Fields by Avg. Funding Count")
 # ranking fields by avg funding/paper
 df2 = df.explode("subject_codes")

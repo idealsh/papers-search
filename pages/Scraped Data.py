@@ -30,7 +30,7 @@ def load_scraped():
 df_scraped = load_scraped()
 
 
-st.markdown(
+st.html(
     """
     <style>
     .sticky-note {
@@ -59,8 +59,7 @@ st.markdown(
         font-weight: bold;
     }
     </style>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 
@@ -110,7 +109,7 @@ st.html(
     </div>
     """
 )
-st.markdown("---")
+st.divider()
 
 
 df2 = df_scraped["field"].value_counts()
@@ -145,7 +144,7 @@ with tab2:
 
     st.plotly_chart(fig, theme="streamlit")
 
-st.markdown("---")
+st.divider()
 
 st.html(
     f"""
@@ -157,7 +156,7 @@ st.html(
 )
 
 
-st.markdown("---")
+st.divider()
 
 st.header("💬 Top 10 Most Frequent Words in Abstracts")
 
@@ -192,7 +191,7 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
-st.markdown("---")
+st.divider()
 
 st.header("⌛ Research Papers Trend Over Time")
 
@@ -203,11 +202,10 @@ fig = px.line(
 st.plotly_chart(fig, use_container_width=True)
 
 
-st.markdown("---")
+st.divider()
 
 
 st.header("📎 Top Authors by Number of Papers")
-st.write("")
 df_exploded = df_scraped.explode("authors")
 author_counts = df_exploded.groupby("authors").size().reset_index(name="count")
 author_fields = (
@@ -232,7 +230,7 @@ for index, row in top_authors.iterrows():
     """
     )
 
-# st.markdown("---")
+# st.divider()
 # st.header("🔍 Search for Papers by Title")
 # search_term = st.text_input("Search here")
 # if search_term:
