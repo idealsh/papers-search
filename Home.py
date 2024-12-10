@@ -70,7 +70,7 @@ st.markdown(
 # st.write(df["subject_codes"].map(lambda x :str(x)[1:3]))
 df["two_digits"] = df["subject_codes"].map(lambda x: str(x)[1:3])
 # st.write(df['subject_names'].map(set).explode().value_counts())
-st.title("Datasci Project")
+st.title("Honggege Data Science Project")
 st.write("")
 # st.header("Organize your app with layouts")
 
@@ -84,15 +84,18 @@ with st.sidebar:
     st.sidebar.title("Sidebar Menu")
 
     st.subheader("📅  Year of Publication")
-    start, end = st.slider("", 2018, 2023, (2020, 2022), label_visibility="collapsed")
+    start, end = st.slider("", 2018, 2023, (2018, 2023), label_visibility="collapsed")
     st.write("From", str(start), "to", str(end))
 
+st.header("Pages")
 
 # Main Content Layout:material/fdssdf:
 st.page_link("Home.py", label="Home", icon="🏠")
 st.page_link("pages/Scopus Data.py", label="Scopus Data", icon="📚")
 st.page_link("pages/Scraped Data.py", label="Scraped Data", icon="🌐")
-st.page_link("pages/Search Papers.py", label="Search (ML)", icon="⚙️")
+st.page_link("pages/Search Papers ✨.py", label="Search papers (ML)", icon="🔎")
+
+st.header("Data Overview")
 
 col1, col2 = st.columns([1, 1])
 
@@ -113,26 +116,24 @@ total_scraped_paper = df_scraped.shape[0]
 # Number of Papers
 
 with col1:
-    st.markdown(
+    st.html(
         f"""
     <div class="sticky-note">
         <p>📑 Total Scopus Paper</p>
-        <h1>{total_paper}</h1>
+        <h1>{total_paper:,}</h1>
     </div>
     """,
-        unsafe_allow_html=True,
     )
 
 with col2:
-    st.markdown(
+    st.html(
         f"""
     <div class="sticky-note">
         <p>📝 Total Scraped Paper</p>
-        <h1>{total_scraped_paper}</h1>
+        <h1>{total_scraped_paper:,}</h1>
         
     </div>
-    """,
-        unsafe_allow_html=True,
+    """
     )
 st.write("")
 
@@ -148,10 +149,13 @@ with st.container():
     fig = px.pie(combind_df, values="Paper", names="Name", title="Number of Paper")
     st.plotly_chart(fig, theme=None)
 
-st.markdown("---")
-st.markdown("### 🎯 Honggege's memebers")
-st.write("")
-st.write("1. Bhannavit Sripusitto 6638127221")
-st.write("2. Sahanont Thammasitboon 6638236021")
-st.write("3. Sirikamol Prapaisuwon 6638250721")
-st.write("4. Supitcha Juntra 6638253621")
+st.divider()
+st.markdown("### 🎯 Honggege's members")
+st.markdown(
+    """
+    1. 6638127221 Bhannavit Sripusitto
+    2. 6638236021 Sahanont Thammasitboon
+    3. 6638250721 Sirikamol Prapaisuwon
+    4. 6638253621 Supitcha Juntra
+    """
+)

@@ -13,9 +13,11 @@ from collections import Counter
 import altair as alt
 from sklearn.feature_extraction.text import CountVectorizer
 
+
 @st.cache_resource
 def connect_db():
     return sqlalchemy.create_engine(st.secrets["DB_URL"])
+
 
 @st.cache_data
 def load():
@@ -87,14 +89,8 @@ with st.sidebar:
     st.write("Field:", format_func(field))
 
     st.subheader("📅  Year of Publication")
-    start, end = st.slider("", 2018, 2023, (2020, 2022), label_visibility="collapsed")
+    start, end = st.slider("", 2018, 2023, (2018, 2023), label_visibility="collapsed")
     st.write("From", str(start), "to", str(end))
-
-
-st.page_link("Home.py", label="Home", icon="🏠")
-st.page_link("pages/Scopus Data.py", label="Scopus Data", icon="📚")
-st.page_link("pages/Scraped Data.py", label="Scraped Data", icon="🌐")
-st.page_link("pages/Search Papers.py", label="Search (ML)", icon="⚙️")
 
 col1, col2 = st.columns([1, 1])
 
@@ -115,15 +111,13 @@ else:
     df_author = df[df["two_digits"] == field]
 
 
-st.markdown("")
-st.markdown(
+st.html(
     f"""
     <div class="sticky-note">
         <p>📑 Total Scopus Paper</p>
-        <h1>{total_paper}</h1>
+        <h1>{total_paper:,}</h1>
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 st.markdown("---")
 
@@ -188,7 +182,7 @@ fig.update_layout(
     },
     geo=dict(showframe=False),
 )
-st.write("Base on Log")
+st.write("Data is displayed in logarithmic scale")
 st.plotly_chart(fig)
 
 st.markdown("---")
@@ -197,25 +191,23 @@ st.markdown("---")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown(
+    st.html(
         f"""
     <div class="sticky-note">
-        <h1>{num_authors}</h1>
+        <h1>{num_authors:,}</h1>
         <p>🖋️ Number of Authors</p>
     </div>
     """,
-        unsafe_allow_html=True,
     )
 
 with col2:
-    st.markdown(
+    st.html(
         f"""
     <div class="sticky-note">
-        <h1>{num_countries}</h1>
+        <h1>{num_countries:,}</h1>
         <p>📍 Number of Countries</p>
     </div>
     """,
-        unsafe_allow_html=True,
     )
 
 st.markdown("---")
@@ -237,7 +229,7 @@ fig = px.bar(
     x="Frequency",
     y=top_10_words.index,
     orientation="h",
-    title="for " + format_func(field) + " Field",
+    title="In " + format_func(field),
     labels={"Frequency": "Word Frequency", "Word": "Word"},
     text="Frequency",
 )
@@ -274,14 +266,14 @@ fig = px.bar(
 fig.update_layout(
     yaxis=dict(title="Number of Authors", type="log", titlefont=dict(size=12)),
     xaxis_title="Number of Papers",
-    title="Number of Authors Grouped by Paper Count (Log Scale) from "
+    title="Number of Authors Grouped by Paper Count (Log Scale) in "
     + format_func(field),
 )
 
 st.plotly_chart(fig, theme="streamlit")
 
 st.markdown("---")
-st.header("💰 Ranking Fields by Avg Funding")
+st.header("💰 Ranking Fields by Avg. Funding Count")
 # ranking fields by avg funding/paper
 df2 = df.explode("subject_codes")
 df2["subject_codes"] = (df2["subject_codes"].apply(lambda x: x // 100)).astype(str)
@@ -302,17 +294,7 @@ c = (
     .mark_bar()
     .encode(
         y=alt.Y("Field", sort=None),
-        x=alt.X("funding_count", title="AVG Funding Per Paper"),
+        x=alt.X("funding_count", title="Avg. Funding Count Per Paper"),
     )
 )
 st.altair_chart(c)
-
-
-# Footer
-st.markdown("---")
-st.markdown("### 🎯 Honggege's memebers")
-st.write("")
-st.write("1. Bhannavit Sripusitto 6638127221")
-st.write("2. Sahanont Thammasitboon 6638236021")
-st.write("3. Sirikamol Prapaisuwon 6638250721")
-st.write("4. Supitcha Juntra 6638253621")

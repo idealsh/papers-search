@@ -13,14 +13,11 @@ from collections import Counter
 import altair as alt
 from sklearn.feature_extraction.text import CountVectorizer
 
-st.page_link("Home.py", label="Home", icon="🏠")
-st.page_link("pages/Scopus Data.py", label="Scopus Data", icon="📚")
-st.page_link("pages/Scraped Data.py", label="Scraped Data", icon="🌐")
-st.page_link("pages/Search Papers.py", label="Search (ML)", icon="⚙️")
 
 @st.cache_resource
 def connect_db():
     return sqlalchemy.create_engine(st.secrets["DB_URL"])
+
 
 @st.cache_data
 def load_scraped():
@@ -85,7 +82,7 @@ with st.sidebar:
     st.write("Field:", format_func(field))
 
     st.subheader("📅  Year of Publication")
-    start, end = st.slider("", 2018, 2023, (2020, 2022), label_visibility="collapsed")
+    start, end = st.slider("", 2018, 2023, (2018, 2023), label_visibility="collapsed")
     st.write("From", str(start), "to", str(end))
 
 df_scraped = df_scraped[(df_scraped["year"] >= start) & (df_scraped["year"] <= end)]
@@ -103,17 +100,15 @@ else:
 # st.write(field)
 
 st.title("Scraped Data")
-st.write("")
+st.text("Additional papers are scraped from Arxiv.")
 
-st.markdown("")
-st.markdown(
+st.html(
     f"""
     <div class="sticky-note">
-        <p>📑 Total Scopus Paper</p>
-        <h1>{total_paper}</h1>
+        <p>📑 Total Scraped Paper</p>
+        <h1>{total_paper:,}</h1>
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 st.markdown("---")
 
@@ -152,14 +147,13 @@ with tab2:
 
 st.markdown("---")
 
-st.markdown(
+st.html(
     f"""
     <div class="sticky-note">
-        <h1>{num_authors}</h1>
+        <h1>{num_authors:,}</h1>
         <p>🖋️ Number of Authors</p>
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 
@@ -182,7 +176,7 @@ fig = px.bar(
     x="Frequency",
     y=top_10_words.index,
     orientation="h",
-    title="for " + format_func(field) + " Field",
+    title="In " + format_func(field),
     labels={"Frequency": "Word Frequency", "Word": "Word"},
     text="Frequency",
 )
@@ -228,33 +222,22 @@ top_authors = (
 )
 
 for index, row in top_authors.iterrows():
-    st.markdown(
+    st.html(
         f"""
-    <div style='border: 1px solid #eaeaea; padding: 10px; margin: 5px; border-radius: 5px; background-color: rgba(190, 190, 210, 0.09);'>
+    <div style='border: 1px solid rgba(190, 190, 210, 0.2); padding: 1rem 1.25rem; border-radius: 5px; background-color: rgba(190, 190, 210, 0.09);'>
         <strong>📖 Author:</strong> {row['authors']} <br>
         <strong>📚 Papers Published:</strong> {row['count']} <br>
         <strong>🎓 Field(s):</strong> {row['field']}
     </div>
-    """,
-        unsafe_allow_html=True,
+    """
     )
-    st.write("")
 
-st.markdown("---")
-st.header("🔍 Search for Papers by Title")
-search_term = st.text_input("Search here")
-if search_term:
-    search_results = df_scraped[
-        df_scraped["title"].str.contains(search_term, case=False, na=False)
-    ]
-    st.write(f"Found {len(search_results)} results:")
-    st.dataframe(search_results[["year", "title", "field"]])
-
-# Footer
-st.markdown("---")
-st.markdown("### 🎯 Honggege's memebers")
-st.write("")
-st.write("1. Bhannavit Sripusitto 6638127221")
-st.write("2. Sahanont Thammasitboon 6638236021")
-st.write("3. Sirikamol Prapaisuwon 6638250721")
-st.write("4. Supitcha Juntra 6638253621")
+# st.markdown("---")
+# st.header("🔍 Search for Papers by Title")
+# search_term = st.text_input("Search here")
+# if search_term:
+#     search_results = df_scraped[
+#         df_scraped["title"].str.contains(search_term, case=False, na=False)
+#     ]
+#     st.write(f"Found {len(search_results)} results:")
+#     st.dataframe(search_results[["year", "title", "field"]])
