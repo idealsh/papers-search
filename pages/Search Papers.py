@@ -4,10 +4,6 @@ import pandas as pd
 from sbert import sbert
 from sklearn.metrics.pairwise import cosine_similarity
 
-from load_vects import download_or_cached
-
-from pathlib import Path
-
 
 @st.cache_resource
 def connect_db():
@@ -16,9 +12,7 @@ def connect_db():
 
 @st.cache_data
 def load_generated(filename):
-    # local_file = download_or_cached(st.secrets["RELEASES_URL"] + filename)
-    # return pd.read_feather(local_file)
-    return pd.read_feather(f"./generated/{filename}")
+    return pd.read_feather(st.secrets["RELEASES_URL"] + filename)
 
 
 def weighted_mean(values, weights):
